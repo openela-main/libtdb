@@ -3,10 +3,10 @@
 %endif
 
 Name: libtdb
-Version: 1.4.7
-Release: 1%{?dist}
+Version: 1.4.8
+Release: 2%{?dist}
 Summary: The tdb library
-License: LGPLv3+
+License: LGPL-3.0-or-later
 URL: http://tdb.samba.org/
 Source0: http://samba.org/ftp/tdb/tdb-%{version}.tar.gz
 Source1: http://samba.org/ftp/tdb/tdb-%{version}.tar.asc
@@ -15,7 +15,6 @@ Source2: tdb.keyring
 
 # Patches
 Patch0001: 0003-wafsamba-Fix-few-SyntaxWarnings-caused-by-regular-ex.patch
-Patch0002: libtdb-revert-breaking-tdb.h.patch
 
 BuildRequires: make
 BuildRequires: gcc
@@ -102,6 +101,12 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %ldconfig_scriptlets
 
 %changelog
+* Mon Jun 05 2023 Pavel Filipenský <pfilipen@redhat.com> - 1.4.8-2
+- resolves: rhbz#2190420 - Rebuilt to retrigger brew build
+
+* Tue May 16 2023 Pavel Filipenský <pfilipen@redhat.com> - 1.4.8-1
+- resolves: rhbz#2190420 - Rebase to version 1.4.8
+
 * Fri Oct 21 2022 Andreas Schneider <asn@redhat.com> - 1.4.7-1
 - resolves: rhbz#2131998 - Rebase to version 1.4.7
 
