@@ -1,9 +1,5 @@
-%if 0%{?fedora} || 0%{?rhel} > 7
-%global with_python3 1
-%endif
-
 Name: libtdb
-Version: 1.4.9
+Version: 1.4.10
 Release: 1%{?dist}
 Summary: The tdb library
 License: LGPL-3.0-or-later
@@ -13,16 +9,12 @@ Source1: http://samba.org/ftp/tdb/tdb-%{version}.tar.asc
 # gpg2 --no-default-keyring --keyring ./tdb.keyring --recv-keys 9147A339719518EE9011BCB54793916113084025
 Source2: tdb.keyring
 
-# Patches
-
 BuildRequires: make
 BuildRequires: gcc
 BuildRequires: gnupg2
 BuildRequires: libxslt
 BuildRequires: docbook-style-xsl
-%if 0%{?with_python3}
 BuildRequires: python3-devel
-%endif
 
 Provides: bundled(libreplace)
 Obsoletes: python2-tdb < 1.4.2-1
@@ -44,7 +36,6 @@ Requires: libtdb = %{version}-%{release}
 %description -n tdb-tools
 Tools to manage Tdb files
 
-%if 0%{?with_python3}
 %package -n python3-tdb
 Summary: Python3 bindings for the Tdb library
 Requires: libtdb = %{version}-%{release}
@@ -52,7 +43,6 @@ Requires: libtdb = %{version}-%{release}
 
 %description -n python3-tdb
 Python3 bindings for libtdb
-%endif
 
 %prep
 %autosetup -n tdb-%{version} -p1
@@ -69,7 +59,7 @@ zcat %{SOURCE0} | gpgv2 --quiet --keyring %{SOURCE2} %{SOURCE1} -
 %make_build check
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 
 %files
 %{_libdir}/libtdb.so.*
@@ -90,16 +80,17 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_mandir}/man8/tdbtool.8*
 %{_mandir}/man8/tdbrestore.8*
 
-%if 0%{?with_python3}
 %files -n python3-tdb
 %{python3_sitearch}/__pycache__/_tdb_text.cpython*.py[co]
 %{python3_sitearch}/tdb.cpython*.so
 %{python3_sitearch}/_tdb_text.py
-%endif
 
 %ldconfig_scriptlets
 
 %changelog
+* Wed Apr 24 2024 Pavel Filipenský <pfilipen@redhat.com> - 1.4.10-1
+- resolves: RHEL-33756 - Rebase to version 1.4.10
+
 * Mon Dec 04 2023 Andreas Schneider <asn@redhat.com> - 1.4.9-1
 - resolves: RHEL-16480 - Rebase to version 1.4.9
 
